@@ -2,14 +2,50 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     lazy = true,
+    branch = "main",
     event = { "BufReadPre", "BufNewFile", "BufReadPost" },
     build = ":TSUpdate",
     dependencies = {
       "posva/vim-vue",
       "windwp/nvim-ts-autotag",
     },
+    main = "nvim-treesitter",
+    init = function()
+      local ensure_installed = {
+        "c",
+        "haskell",
+        "lua",
+        "vim",
+        "vimdoc",
+        "javascript",
+        "html",
+        "ruby",
+        "go",
+        "vue",
+        "css",
+        "scss",
+        "zig",
+        "typst",
+      }
+      local already_installed = require("nvim-treesitter.config").get_installed()
+      local parsersToInstall = vim
+        .iter(ensure_installed)
+        :filter(function(parser)
+          return not vim.tbl_contains(already_installed, parser)
+        end)
+        :totable()
+      require("nvim-treesitter").install(parsersToInstall)
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          -- Enable treesitter highlighting and disable regex syntax
+          pcall(vim.treesitter.start)
+          -- Enable treesitter-based indentation
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
+      -- ...
+    end,
     opts = {
-      ensure_installed = { "c", "haskell", "lua", "vim", "vimdoc", "javascript", "html", "ruby", "go", "vue", "css", "scss", "zig", "typst" },
       autotag = {
         enable = true,
         filetype = { "html", "vue" },
@@ -20,8 +56,6 @@ return {
         module_path = "ts_context_commentstring.internal",
       },
       sync_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
       endwise = {
         enable = true,
       },
