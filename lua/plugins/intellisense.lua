@@ -257,7 +257,7 @@ return {
           python = { "isort", "black" },
           javascript = { "prettierd", "prettier" },
           typescript = { "prettierd", "prettier" },
-          haskell = { "prettierd", "prettier" ,"ormolu", "fourmolu" },
+          haskell = { "ormolu", "fourmolu" },
           html = { "prettierd", "prettier" },
           vue = { "prettierd", "prettier" },
           css = { "prettierd", "prettier" },

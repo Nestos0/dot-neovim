@@ -88,7 +88,8 @@ vim.lsp.config("basedpyright", {
   },
 })
 
-vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "hls", "cssls", "bash", "hls" })
+vim.lsp.enable({ "lua_ls", "clangd", "basedpyright", "hls", "cssls", "bash" })
+vim.lsp.config("hls", { cmd = { "haskell-language-server", "--lsp" }, filetypes = { "haskell" } })
 
 vim.lsp.config("rust_analyzer", { cmd = { "rust-analyzer" }, filetypes = { "rust" } })
 vim.lsp.enable("rust_analyzer")
